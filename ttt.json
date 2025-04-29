@@ -1,0 +1,27 @@
+[
+  {
+    "type": "folder",
+    "path": "web",
+    "naming_convention": "snake_case"
+  },
+  {
+    "type": "folder",
+    "path": "api",
+    "naming_convention": "snake_case"
+  },
+  {
+    "type": "folder",
+    "path": "lf",
+    "naming_convention": "snake_case"
+  },
+  {
+    "type": "file",
+    "path": "api/methodseed.py",
+    "naming_convention": "snake_case"
+  },
+  {
+    "type": "file",
+    "path": "lf/taskseed.py",
+    "naming_convention": "snake_case"
+  }
+]

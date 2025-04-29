@@ -1,0 +1,48 @@
+AIエディターCursorを使い始める手順と基本的な使い方を、丁寧にまとめただけの記事。 #初心者 - Qiita
+https://qiita.com/ryamate/items/94a6170c4661242b4c1c
+
+認知的過負荷を回避して生産性を向上させる #生産性向上 - Qiita
+https://qiita.com/yamatai12/items/e523166bf282b5b7b18d
+
+機械学習の記事一覧 | Zenn
+https://zenn.dev/topics/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92
+
+Teslaはカメラを使ってどのように世界を認識しているか
+https://zenn.dev/turing_motors/articles/cf9f5a230ceb57
+
+大規模モデルを支える分散並列学習のしくみ Part1
+https://zenn.dev/turing_motors/articles/0e6e2baf72ebbc
+
+うさぎでもわかるSecond-Me - 個人のAI自己を構築する新世代オープンソースプラットフォーム
+https://zenn.dev/taku_sid/articles/20250426_second_me
+
+Deepseekで話題になっているCoT（Chain-of-Thought）データセットについて解説、入手先・LLMへの役割とは？
+https://zenn.dev/nexdataai/articles/f9afaf8486e277
+
+Stable Diffusionからの概念消去㉒：ACE（論文）
+https://zenn.dev/fmuuly/articles/1399c1da700f3c
+
+検索 | Zenn
+https://zenn.dev/search?q=%25E6%25A9%259F%25E6%25A2%25B0%25E5%25AD%25A6%25E7%25BF%2592
+
+検索 | Zenn
+https://zenn.dev/search
+
+Zenn｜エンジニアのための情報共有コミュニティ
+https://zenn.dev/
+
+MonotaRO ［マーケティング部、マーケティング、平社員、中途入社、男性、在籍3年未満、退社済み(2025年より前)、総合スコア3.9、2025年04月17日］ OpenWork
+https://www.openwork.jp/user_answer.php?v=b_follow_notice-20250426081659-7968s0-0_0&vid=a0AIh000002Pv7Z
+
+ゼロからはじめるRAG：クラウドに頼らない完全ローカル構築ガイド #AI - Qiita
+https://qiita.com/dennis_wang/items/04251529a2f4fe12aa31
+
+作業配信をしているエンジニア一覧
+https://zenn.dev/sosukesuzuki/scraps/a6d74ffce21185
+
+【参加記】Web Speed Hackathon 2025で優勝した話
+https://zenn.dev/shun_shobon/articles/173450f5bec890
+
+サプライチェーンマネジメントのためのデータサイエンス/オペレーションズ・リサーチ入門 #Python - Qiita
+https://qiita.com/hasegawa16777216/items/b8533a41873158415844
+
