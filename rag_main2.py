@@ -11,9 +11,11 @@ from llama_index.core import get_response_synthesizer
 from llama_index.core.postprocessor import SimilarityPostprocessor
 from llama_index.core.prompts import PromptTemplate
 from llama_index.core.storage import StorageContext
-import chromadb
-import sqlite3
+import chromadb, sqlite3
+import numpy as np
 from datetime import datetime, timedelta
+from llama_index.core.postprocessor.types import BaseNodePostprocessor
+from pydantic import Field
 
 # === 設定 ===
 OLLAMA_MODEL = "llama3.1:8b"
@@ -48,6 +50,60 @@ qa_template = PromptTemplate(
 回答: """
 )
 
+class SoftmaxSimilarityPostprocessor(BaseNodePostprocessor):
+    def __init__(self, temperature: float = 1.0, top_k: int = None, similarity_cutoff: float = None):
+        self.temperature = temperature
+        self.top_k = top_k
+        self.similarity_cutoff = similarity_cutoff
+
+    def _postprocess_nodes(self, nodes_with_scores, query_str=None):
+        if not nodes_with_scores:
+            return []
+
+        scores = np.array([n.score for n in nodes_with_scores])
+        scores = scores / self.temperature
+        softmax_scores = np.exp(scores) / np.exp(scores).sum()
+
+        # ノードにsoftmaxスコアを割り当てる
+        for node, score in zip(nodes_with_scores, softmax_scores):
+            node.score = score
+
+        # similarity_cutoff を使ってフィルタリング
+        if self.similarity_cutoff is not None:
+            nodes_with_scores = [n for n in nodes_with_scores if n.score >= self.similarity_cutoff]
+
+        # top_k を使ってソートして切り詰め
+        if self.top_k is not None:
+            nodes_with_scores = sorted(nodes_with_scores, key=lambda n: n.score, reverse=True)
+            nodes_with_scores = nodes_with_scores[:self.top_k]
+
+        return nodes_with_scores
+
+class MySoftmaxPostprocessor(BaseNodePostprocessor):
+    temperature: float = Field(default=1.0, description="Softmax温度パラメータ")
+    top_k: int = Field(default=None, description="上位k件のみを残す")
+    similarity_cutoff: float = Field(default=None, description="類似度の閾値")
+
+    def _postprocess_nodes(self, nodes_with_scores, query_str=None):
+        if not nodes_with_scores:
+            return []
+
+        scores = np.array([n.score for n in nodes_with_scores])
+        scores = scores / self.temperature
+        softmax_scores = np.exp(scores) / np.exp(scores).sum()
+
+        for node, score in zip(nodes_with_scores, softmax_scores):
+            node.score = score
+
+        if self.similarity_cutoff is not None:
+            nodes_with_scores = [n for n in nodes_with_scores if n.score >= self.similarity_cutoff]
+
+        if self.top_k is not None:
+            nodes_with_scores = sorted(nodes_with_scores, key=lambda n: n.score, reverse=True)
+            nodes_with_scores = nodes_with_scores[:self.top_k]
+
+        return nodes_with_scores
+
 # 履歴からドキュメント抽出
 def get_history_documents(path=HISTORY_DB, days=7, limit=50):
     chrome_epoch = datetime(1601, 1, 1)
@@ -65,6 +121,7 @@ def get_history_documents(path=HISTORY_DB, days=7, limit=50):
         for title, url, _ in cursor.fetchall()
     ]
     conn.close()
+
     return docs
 
 # ドキュメント準備 → インデックス作成
@@ -76,15 +133,17 @@ if not docs:
 parser = SimpleNodeParser.from_defaults(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
 nodes = parser.get_nodes_from_documents(docs)
 index = VectorStoreIndex(nodes, storage_context=storage_context)
+postprocessor = MySoftmaxPostprocessor(temperature=0.7, top_k=5)
 
-# クエリエンジン作成
 query_engine = index.as_query_engine(
     similarity_top_k=10,
     response_synthesizer=get_response_synthesizer(
         response_mode="tree_summarize",
         text_qa_template=qa_template,
     ),
-    # node_postprocessors=[SimilarityPostprocessor(similarity_cutoff=0.7)],
+    node_postprocessors=[
+        postprocessor
+    ],
 )
 
 # 対話

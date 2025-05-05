@@ -285,7 +285,7 @@ def main():
     print("\nカテゴリ別カバレッジ:")
     for category, score in metrics['categorical_coverage'].items():
         print(f"- {category}: {score:.4f}")
-    
+
     # キーワードベースのカバレッジ（オプション）
     keywords = {"犬": 0.8, "猫": 0.7, "好き": 0.6, "です": 0.2, "は": 0.1}
     keyword_coverage, keyword_metrics = analyzer.keyword_based_coverage(doc1, doc2, keywords)

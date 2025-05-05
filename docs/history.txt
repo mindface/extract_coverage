@@ -1,48 +1,36 @@
-AIエディターCursorを使い始める手順と基本的な使い方を、丁寧にまとめただけの記事。 #初心者 - Qiita
-https://qiita.com/ryamate/items/94a6170c4661242b4c1c
+エビデンスに基づいた医療事故の防止策が可能になる！？ ～医薬品の類似性検索システム～ - 医療安全推進者ネットワーク
+https://www.medsafe.net/recent/16ikashika.html
 
-認知的過負荷を回避して生産性を向上させる #生産性向上 - Qiita
-https://qiita.com/yamatai12/items/e523166bf282b5b7b18d
+ソニー株式会社 | ニュースリリース | ソニーとアステラス製薬がん領域における新規ADCプラットフォーム創製に向けた共同研究契約を締結
+https://www.sony.co.jp/news-release/202305/23-0516/
 
-機械学習の記事一覧 | Zenn
-https://zenn.dev/topics/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92
+1. 癌分子標的薬総論｜第5回　癌分子標的薬の歴史 ｜GI-pedia｜消化器癌治療の広場 GI cancer-net
+https://www.gi-cancer.net/gi/gi-pedia/vol05/page01.html
 
-Teslaはカメラを使ってどのように世界を認識しているか
-https://zenn.dev/turing_motors/articles/cf9f5a230ceb57
+製薬企業での機械学習の利用 Part 1 l DataRobot
+https://www.datarobot.com/jp/blog/predictive_analytics_healthcare_10252019/
 
-大規模モデルを支える分散並列学習のしくみ Part1
-https://zenn.dev/turing_motors/articles/0e6e2baf72ebbc
+よくわかる抗体医薬品 | バイオのはなし | 患者さん・一般の皆さま | 中外製薬株式会社
+https://www.chugai-pharm.co.jp/ptn/bio/antibody/
 
-うさぎでもわかるSecond-Me - 個人のAI自己を構築する新世代オープンソースプラットフォーム
-https://zenn.dev/taku_sid/articles/20250426_second_me
+創薬プロセスの変革への挑戦──最先端技術・クライオ電顕の導入で加速する創薬研究｜中外製薬株式会社｜就活・転職活動に役立つキャリア学習サイト
+https://www.talent-book.jp/chugai-pharm/stories/52820
 
-Deepseekで話題になっているCoT（Chain-of-Thought）データセットについて解説、入手先・LLMへの役割とは？
-https://zenn.dev/nexdataai/articles/f9afaf8486e277
+医薬品の製造。ステップ 3 および 4:分子またはリードの選択 - EUPATI Toolbox
+https://toolbox.eupati.eu/resources/%E5%8C%BB%E8%96%AC%E5%93%81%E3%81%AE%E8%A3%BD%E9%80%A0%E3%80%82%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-3-%E3%81%8A%E3%82%88%E3%81%B3-4%E5%88%86%E5%AD%90%E3%81%BE%E3%81%9F%E3%81%AF%E3%83%AA%E3%83%BC/?lang=ja
 
-Stable Diffusionからの概念消去㉒：ACE（論文）
-https://zenn.dev/fmuuly/articles/1399c1da700f3c
+創薬アイデアを形にする高い製薬技術の確立へ。中分子創薬の最前線｜中外製薬株式会社｜就活・転職活動に役立つキャリア学習サイト
+https://www.talent-book.jp/chugai-pharm/stories/52954
 
-検索 | Zenn
-https://zenn.dev/search?q=%25E6%25A9%259F%25E6%25A2%25B0%25E5%25AD%25A6%25E7%25BF%2592
+「エビデンス至上主義」からの脱却 人事の意思決定を変える経営学の思考法 | 『日本の人事部』
+https://jinjibu.jp/article/detl/keyperson/3744/
 
-検索 | Zenn
-https://zenn.dev/search
+エビデンスから身につける物理療法 第2版 | 神陵文庫
+https://shinryobunko.co.jp/item-detail/1351322
 
-Zenn｜エンジニアのための情報共有コミュニティ
-https://zenn.dev/
+エビデンス（Evidence） | 患者さんのためのアシスト | がん情報サイトAssist | 第一三共エスファ
+https://oncology-assist.jp/patient/comic/014.php?certification=1
 
-MonotaRO ［マーケティング部、マーケティング、平社員、中途入社、男性、在籍3年未満、退社済み(2025年より前)、総合スコア3.9、2025年04月17日］ OpenWork
-https://www.openwork.jp/user_answer.php?v=b_follow_notice-20250426081659-7968s0-0_0&vid=a0AIh000002Pv7Z
-
-ゼロからはじめるRAG：クラウドに頼らない完全ローカル構築ガイド #AI - Qiita
-https://qiita.com/dennis_wang/items/04251529a2f4fe12aa31
-
-作業配信をしているエンジニア一覧
-https://zenn.dev/sosukesuzuki/scraps/a6d74ffce21185
-
-【参加記】Web Speed Hackathon 2025で優勝した話
-https://zenn.dev/shun_shobon/articles/173450f5bec890
-
-サプライチェーンマネジメントのためのデータサイエンス/オペレーションズ・リサーチ入門 #Python - Qiita
-https://qiita.com/hasegawa16777216/items/b8533a41873158415844
+エビデンス | 健康医療データの用語集 | 日本製薬工業協会
+https://www.jpma.or.jp/information/evaluation/results/allotment/kenkou_iryou_data/detail_14.html
 

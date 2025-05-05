@@ -19,7 +19,7 @@ import requests
 from bs4 import BeautifulSoup
 # === 1. 環境設定 ===
 
-OLLAMA_MODEL = "llama2-japanese"  # Ollamaで動かしているモデル名
+OLLAMA_MODEL = "7shi/tanuki-dpo-v1.0"
 DOCS_DIR = "docs"
 CHROMA_DIR = "chroma_store"
 CHUNK_SIZE = 256
@@ -48,7 +48,7 @@ def get_history_documents_from_txt(file_path: str = "docs/history.txt") -> list[
     return [Document(text=entry) for entry in entries]
 
 # モデルの初期化（タイムアウト設定を追加）
-llm = Ollama(model=OLLAMA_MODEL, request_timeout=120.0)  # タイムアウトを120秒に設定
+llm = Ollama(model=OLLAMA_MODEL, request_timeout=120.0)
 embed_model = OllamaEmbedding(
     model_name=OLLAMA_MODEL,
     request_timeout=60.0,

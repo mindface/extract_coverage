@@ -3,11 +3,13 @@ import shutil
 import sqlite3
 from pathlib import Path
 from datetime import datetime, timedelta
-import sys, platform, requests, time, random
+import sys, platform, requests, time, random, json
 from bs4 import BeautifulSoup
+# from InstructorEmbedding import INSTRUCTOR
+# from sentence_transformers import SentenceTransformer
 
 HISTORY_TXT_FILE = "docs/history.txt"
-HISTORY_DB_FILE = "docs/history.db"
+HISTORY_DB_FILE = "docs/history2.db"
 Path("docs").mkdir(exist_ok=True)
 skip_urls = [
     "localhost",
@@ -42,7 +44,7 @@ skip_urls = [
     "https://www.soundcloud.com",
     "https://www.mixcloud.com",
 ]
-required_keywords = ["機械学習", "AI", "人工知能","zenn","qiita"]
+required_keywords = ["身体構造", "検出", "人体構成","","生活習慣"]
 
 def get_page_details(url: str) -> dict:
     try:
@@ -54,7 +56,7 @@ def get_page_details(url: str) -> dict:
         # メタデータの抽出
         meta_description = soup.find('meta', {'name': 'description'})
         description = meta_description['content'] if meta_description else ''
-
+        
         # 本文テキストの抽出（HTMLタグを除去）
         # 不要な要素を削除
         for tag in soup(['script', 'style', 'nav', 'footer', 'header']):
@@ -85,7 +87,7 @@ def page_contains_keyword(url: str, keyword: str) -> bool:
         # メタデータの抽出
         meta_description = soup.find('meta', {'name': 'description'})
         description = meta_description['content'] if meta_description else ''
-
+        
         for tag in soup(['script', 'style', 'nav', 'footer', 'header']):
             tag.decompose()
 
@@ -119,7 +121,7 @@ def get_chrome_history_path():
     print(f"[✅] Chromeの履歴ファイル: {path}")
     return path
 
-def collect_chrome_history(limit=100, days=7, url_filter_keyword=None):
+def collect_chrome_history(limit=100, days=7):
     original_path = get_chrome_history_path()
     temp_copy_path = "temp_history_copy.db"
 
@@ -148,7 +150,6 @@ def collect_chrome_history(limit=100, days=7, url_filter_keyword=None):
                 continue
             urls.append((title or "(no title)", url, visit_time))
             time.sleep(random.uniform(1, 3))
-
     finally:
         conn.close()
         os.remove(temp_copy_path)
@@ -182,7 +183,7 @@ def create_history_db(path: str = HISTORY_DB_FILE):
             category TEXT
         )
     """)
-    
+
     # インデックスの作成
     cursor.execute("""
         CREATE INDEX IF NOT EXISTS idx_visit_time ON history(visit_time)
@@ -194,21 +195,29 @@ def create_history_db(path: str = HISTORY_DB_FILE):
     conn.commit()
     conn.close()
 
+def load_embedding_model():
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    # return INSTRUCTOR('hkunlp/instructor-base')
+
 def save_history_to_db(history: list[tuple[str, str, int]], path: str = HISTORY_DB_FILE):
     create_history_db(path)
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
+    
+    # model = load_embedding_model()
+    # model = SentenceTransformer('all-MiniLM-L6-v2')
 
     for title, url, visit_time in history:
-        cursor.execute("SELECT 1 FROM history WHERE url = ?", (url,))
-        if cursor.fetchone():
-            print(f"[ℹ️] 既に存在するためスキップ: {url}")
-            continue  # 既に存在していればスキップ
-
+        if any(skip_url in url for skip_url in skip_urls):
+            continue
         if not any(keyword in url or keyword in title for keyword in required_keywords):
             continue
-        # ページの詳細情報を取得
+
         details = get_page_details(url)
+
+        # ★追加：description+contentからベクトル生成
+        full_text = (details['description'] or '') + '\n' + (details['content'] or '')
+        embedding_vector = [0.0] * 768
 
         cursor.execute("""
             INSERT INTO history (
@@ -218,10 +227,11 @@ def save_history_to_db(history: list[tuple[str, str, int]], path: str = HISTORY_
                 description, 
                 content,
                 last_updated,
+                embedding_vector,
                 tags,
                 category
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             title,
             url,
@@ -229,22 +239,21 @@ def save_history_to_db(history: list[tuple[str, str, int]], path: str = HISTORY_
             details['description'],
             details['content'],
             details['last_updated'],
+            json.dumps(embedding_vector),
             '',
             ''
         ))
         
-        # 一定間隔で保存
-        if random.random() < 0.1:  # 10%の確率でコミット
+        if random.random() < 0.1:
             conn.commit()
     
     conn.commit()
     conn.close()
-    print(f"[✅] 履歴をデータベースに保存しました: {path}")
+    print(f"[✅] 履歴＋埋め込みをデータベースに保存しました: {path}")
 
 if __name__ == "__main__":
     try:
-        keyword = "機械学習" 
-        history = collect_chrome_history(url_filter_keyword=keyword)
+        history = collect_chrome_history()
         save_history_to_file(history)
         save_history_to_db(history)
     except Exception as e:
