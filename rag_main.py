@@ -17,8 +17,8 @@ import sqlite3
 from llama_index.core.schema import Document
 import requests
 from bs4 import BeautifulSoup
-# === 1. 環境設定 ===
 
+# === 1. 環境設定 ===
 OLLAMA_MODEL = "7shi/tanuki-dpo-v1.0"
 DOCS_DIR = "docs"
 CHROMA_DIR = "chroma_store"

@@ -182,7 +182,7 @@ def create_history_db(path: str = HISTORY_DB_FILE):
             category TEXT
         )
     """)
-    
+
     # インデックスの作成
     cursor.execute("""
         CREATE INDEX IF NOT EXISTS idx_visit_time ON history(visit_time)
@@ -190,7 +190,7 @@ def create_history_db(path: str = HISTORY_DB_FILE):
     cursor.execute("""
         CREATE INDEX IF NOT EXISTS idx_url ON history(url)
     """)
-    
+
     conn.commit()
     conn.close()
 

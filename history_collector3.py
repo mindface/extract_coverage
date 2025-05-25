@@ -47,7 +47,7 @@ skip_urls = [
 ]
 required_keywords = [
     "術後エビデンス", "対象病理検出", "対象医薬の効果形成","制約構造"
-    "症状", "エビデンス", "製薬","医薬", "医療", "治療", "治療法",
+    "症状", "エビデンス", "製薬","医薬", "医療", "治療", "治療法","創る"
     ]
 
 def get_page_details(url: str) -> dict:
@@ -102,6 +102,7 @@ def page_contains_keyword(url: str, keyword: str) -> bool:
             'content': main_content,
             'last_updated': datetime.utcnow().isoformat()
         }
+
     except Exception as e:
         print(f"[⚠️] {url} のコンテンツ取得に失敗: {e}")
         return {
@@ -125,6 +126,18 @@ def get_chrome_history_path():
     print(f"[✅] Chromeの履歴ファイル: {path}")
     return path
 
+def fetch_page_description(url):
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+        description_tag = soup.find("meta", attrs={"name": "description"})
+        if description_tag:
+            return description_tag.get("content", "")
+    except Exception as e:
+        print(f"[⚠️] {url} から description を取得できませんでした: {e}")
+    return ""
+
 def collect_chrome_history(limit=100, days=7):
     original_path = get_chrome_history_path()
     temp_copy_path = "temp_history_copy.db"
@@ -137,26 +150,31 @@ def collect_chrome_history(limit=100, days=7):
 
     urls = []
 
-    try:
-        conn = sqlite3.connect(temp_copy_path)
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT url, title, last_visit_time FROM urls
-            WHERE last_visit_time > ?
-            ORDER BY last_visit_time DESC
-            LIMIT ?
-        """, (cutoff_microseconds, limit))
+    conn = sqlite3.connect(temp_copy_path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT url, title, last_visit_time FROM urls
+        WHERE last_visit_time > ?
+        ORDER BY last_visit_time DESC
+        LIMIT ?
+    """, (cutoff_microseconds, limit))
 
-        for url, title, visit_time in cursor.fetchall():
-            if any(skip_url in url for skip_url in skip_urls):
-                continue
-            if not any(keyword in url or keyword in title for keyword in required_keywords):
-                continue
-            urls.append((title or "(no title)", url, visit_time))
-            time.sleep(random.uniform(1, 3))
-    finally:
-        conn.close()
-        os.remove(temp_copy_path)
+    for url, title, visit_time in cursor.fetchall():
+        if any(skip_url in url for skip_url in skip_urls):
+            continue
+
+        description = fetch_page_description(url)
+        if not description:
+            continue
+
+        if not any(keyword in description for keyword in required_keywords):
+            continue
+
+        urls.append((title or "(no title)", url, visit_time))
+        time.sleep(random.uniform(1, 2))  # アクセス間隔を少し開ける
+
+    conn.close()
+    os.remove(temp_copy_path)  # tempファイルは後で削除する
 
     return urls
 
@@ -195,7 +213,7 @@ def create_history_db(path: str = HISTORY_DB_FILE):
     cursor.execute("""
         CREATE INDEX IF NOT EXISTS idx_url ON history(url)
     """)
-    
+
     conn.commit()
     conn.close()
 
@@ -250,7 +268,7 @@ def save_history_to_db(history: list[tuple[str, str, int]], path: str = HISTORY_
         
         if random.random() < 0.1:
             conn.commit()
-    
+
     conn.commit()
     conn.close()
     print(f"[✅] 履歴＋埋め込みをデータベースに保存しました: {path}")
